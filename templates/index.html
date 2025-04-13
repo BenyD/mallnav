@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block title %}Mall Navigator - Choose a Mall{%
+endblock %} {% block content %}
+<h1 class="mb-4">Choose a Mall</h1>
+<div class="row">
+  {% for mall in malls %}
+  <div class="col-md-4 mb-4">
+    <div class="card mall-card">
+      <div class="card-body">
+        <h5 class="card-title">{{ mall.name }}</h5>
+        <p class="card-text">
+          Find your way to your favorite shops in {{ mall.name }}
+        </p>
+        <a
+          href="{{ url_for('mall_shops', mall_id=mall.id) }}"
+          class="btn btn-primary"
+          >View Shops</a
+        >
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
