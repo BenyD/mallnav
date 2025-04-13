@@ -9,21 +9,147 @@ endblock %} {% block content %}
   >
 </div>
 
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Shop Information</h5>
-    <p class="card-text">
-      <strong>Mall:</strong> {{ shop.mall.name }}<br />
-      <strong>Floor:</strong> {{ shop.floor }}<br />
-      <strong>Category:</strong> {{ shop.category }}
-    </p>
+<div class="row">
+  <div class="col-md-6">
+    {% if shop.description %}
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Shop Information</h5>
+        <p class="card-text">
+          <strong>Description:</strong> {{ shop.description }}<br />
+          {% if shop.opening_hours %}
+          <strong>Opening Hours:</strong> {{ shop.opening_hours }}<br />
+          {% endif %} {% if shop.special_offers %}
+          <strong>Special Offers:</strong> {{ shop.special_offers }}<br />
+          {% endif %} {% if shop.contact_number %}
+          <strong>Contact:</strong> {{ shop.contact_number }}<br />
+          {% endif %} {% if shop.email %}
+          <strong>Email:</strong>
+          <a href="mailto:{{ shop.email }}">{{ shop.email }}</a><br />
+          {% endif %} {% if shop.website %}
+          <strong>Website:</strong>
+          <a href="{{ shop.website }}" target="_blank">{{ shop.website }}</a>
+          {% endif %}
+        </p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="col-md-6">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Mall Information</h5>
+        <p class="card-text">
+          <strong>Address:</strong> {{ shop.mall.address }}<br />
+          {% if shop.mall.parking_info %}
+          <strong>Parking:</strong> {{ shop.mall.parking_info }}<br />
+          {% endif %} {% if shop.mall.food_court_location %}
+          <strong>Food Court:</strong> {{ shop.mall.food_court_location }}<br />
+          {% endif %} {% if shop.mall.contact_number %}
+          <strong>Mall Contact:</strong> {{ shop.mall.contact_number }} {% endif
+          %}
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="card mt-4">
-  <div class="card-body">
-    <h5 class="card-title">Directions</h5>
-    <p class="card-text">{{ shop.directions }}</p>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Navigation</h5>
+
+        <div class="mb-4">
+          <label for="startPoint" class="form-label">Start from:</label>
+          <select class="form-select" id="startPoint">
+            <option value="main_entrance">Main Entrance</option>
+            <option value="parking">Parking Area</option>
+            <option value="food_court">Food Court</option>
+            <option value="elevator">Nearest Elevator</option>
+            <option value="escalator">Nearest Escalator</option>
+            <option value="restroom">Nearest Restroom</option>
+            <option value="information_desk">Information Desk</option>
+          </select>
+        </div>
+
+        <div class="navigation-steps">
+          <h6 class="text-muted mb-3">Step-by-Step Directions:</h6>
+          <ol class="list-group list-group-numbered">
+            <li class="list-group-item">Proceed to Floor {{ shop.floor }}</li>
+            <li class="list-group-item">{{ shop.directions }}</li>
+            <li class="list-group-item">
+              Look for the {{ shop.name }} signage
+            </li>
+          </ol>
+        </div>
+
+        <div class="mt-4">
+          <div class="alert alert-info">
+            <i class="bi bi-clock"></i> Estimated walking time: 2-3 minutes
+          </div>
+          <div class="alert alert-warning">
+            <i class="bi bi-info-circle"></i> Accessibility: Elevator and
+            escalator access available
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Floor Map</h5>
+        <div class="floor-map">
+          <div class="text-center p-4 bg-light rounded">
+            <i class="bi bi-map" style="font-size: 3rem"></i>
+            <p class="mt-2">Floor {{ shop.floor }} Map</p>
+            <div class="position-relative">
+              <div class="position-absolute top-50 start-50 translate-middle">
+                <i
+                  class="bi bi-geo-alt-fill text-danger"
+                  style="font-size: 2rem"
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Nearby Amenities</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <i class="bi bi-cup-hot"></i> Food & Beverage: 2 minutes
+          </li>
+          <li class="list-group-item">
+            <i class="bi bi-person-workspace"></i> Restrooms: 1 minute
+          </li>
+          <li class="list-group-item">
+            <i class="bi bi-elevator"></i> Elevator: 30 seconds
+          </li>
+          <li class="list-group-item">
+            <i class="bi bi-arrow-up-down"></i> Escalator: 1 minute
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
+
+<style>
+  .navigation-steps .list-group-item {
+    border-left: 3px solid #0d6efd;
+    margin-bottom: 0.5rem;
+  }
+  .floor-map {
+    height: 300px;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+  }
+</style>
 {% endblock %}

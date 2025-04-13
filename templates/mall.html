@@ -7,6 +7,63 @@ endblock %} {% block content %}
   >
 </div>
 
+{% if mall.address %}
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Mall Information</h5>
+    <p class="card-text">
+      <strong>Address:</strong> {{ mall.address }}<br />
+      {% if mall.parking_info %}
+      <strong>Parking:</strong> {{ mall.parking_info }}<br />
+      {% endif %} {% if mall.food_court_location %}
+      <strong>Food Court Location:</strong> {{ mall.food_court_location }}<br />
+      {% if mall.food_court_hours %}
+      <strong>Food Court Hours:</strong> {{ mall.food_court_hours }}<br />
+      {% endif %} {% endif %} {% if mall.contact_number %}
+      <strong>Contact:</strong> {{ mall.contact_number }}<br />
+      {% endif %} {% if mall.email %}
+      <strong>Email:</strong>
+      <a href="mailto:{{ mall.email }}">{{ mall.email }}</a><br />
+      {% endif %} {% if mall.website %}
+      <strong>Website:</strong>
+      <a href="{{ mall.website }}" target="_blank">{{ mall.website }}</a>
+      {% endif %}
+    </p>
+  </div>
+</div>
+{% endif %}
+
+<div class="row mb-4">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Filter Shops</h5>
+        <form action="{{ url_for('search') }}" method="get" class="row g-3">
+          <div class="col-md-4">
+            <select name="category" class="form-select">
+              <option value="">All Categories</option>
+              {% for category in categories %}
+              <option value="{{ category }}">{{ category }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-4">
+            <select name="floor" class="form-select">
+              <option value="">All Floors</option>
+              {% for i in range(1, 5) %}
+              <option value="{{ i }}">Floor {{ i }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   {% for shop in shops %}
   <div class="col-md-6">
@@ -15,7 +72,11 @@ endblock %} {% block content %}
         <h5 class="card-title">{{ shop.name }}</h5>
         <p class="card-text">
           <strong>Floor:</strong> {{ shop.floor }}<br />
-          <strong>Category:</strong> {{ shop.category }}
+          <strong>Category:</strong> {{ shop.category }}<br />
+          {% if shop.opening_hours %}
+          <strong>Opening Hours:</strong> {{ shop.opening_hours }}<br />
+          {% endif %} {% if shop.contact_number %}
+          <strong>Contact:</strong> {{ shop.contact_number }} {% endif %}
         </p>
         <a
           href="{{ url_for('shop_details', shop_id=shop.id) }}"

@@ -18,6 +18,13 @@ db = SQLAlchemy(app)
 class Mall(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(200), nullable=True)
+    parking_info = db.Column(db.String(200), nullable=True)
+    food_court_location = db.Column(db.String(200), nullable=True)
+    food_court_hours = db.Column(db.String(100), nullable=True)
+    contact_number = db.Column(db.String(20), nullable=True)
+    email = db.Column(db.String(100), nullable=True)
+    website = db.Column(db.String(200), nullable=True)
     shops = db.relationship('Shop', backref='mall', lazy=True)
 
 class Shop(db.Model):
@@ -26,6 +33,11 @@ class Shop(db.Model):
     floor = db.Column(db.Integer, nullable=False)
     category = db.Column(db.String(50), nullable=False)
     directions = db.Column(db.String(500), nullable=False)
+    opening_hours = db.Column(db.String(100), nullable=True)
+    contact = db.Column(db.String(50), nullable=True)
+    special_offers = db.Column(db.String(500), nullable=True)
+    email = db.Column(db.String(100), nullable=True)
+    website = db.Column(db.String(200), nullable=True)
     mall_id = db.Column(db.Integer, db.ForeignKey('mall.id'), nullable=False)
 
 # Routes
@@ -42,13 +54,35 @@ def index():
         logger.error(f"Error in index route: {str(e)}")
         return str(e), 500
 
+@app.route('/search')
+def search():
+    query = request.args.get('q', '')
+    category = request.args.get('category', '')
+    floor = request.args.get('floor', '')
+    
+    # Start with all shops
+    shops_query = Shop.query
+    
+    # Apply filters
+    if query:
+        shops_query = shops_query.filter(Shop.name.ilike(f'%{query}%'))
+    if category:
+        shops_query = shops_query.filter_by(category=category)
+    if floor:
+        shops_query = shops_query.filter_by(floor=int(floor))
+    
+    shops = shops_query.all()
+    return render_template('search_results.html', shops=shops, query=query, category=category, floor=floor)
+
 @app.route('/mall/<int:mall_id>')
 def mall_shops(mall_id):
     try:
         mall = Mall.query.get_or_404(mall_id)
         shops = Shop.query.filter_by(mall_id=mall_id).all()
+        categories = db.session.query(Shop.category).distinct().all()
+        categories = [cat[0] for cat in categories]
         logger.info(f"Found {len(shops)} shops for mall {mall.name}")
-        return render_template('mall.html', mall=mall, shops=shops)
+        return render_template('mall.html', mall=mall, shops=shops, categories=categories)
     except Exception as e:
         logger.error(f"Error in mall_shops route: {str(e)}")
         return str(e), 500
@@ -77,13 +111,23 @@ def init_db():
         if mall_count == 0 and shop_count == 0:
             logger.info("Initializing database with sample data...")
             try:
-                # Create malls
+                # Create malls with additional information
                 malls = [
-                    Mall(name="Vivira Mall"),
-                    Mall(name="BSR Mall"),
-                    Mall(name="Express Avenue Mall"),
-                    Mall(name="Marina Mall"),
-                    Mall(name="Phoenix Mall")
+                    Mall(name="Vivira Mall", 
+                         address="123 Mount Road, Chennai",
+                         parking_info="Parking available in basement and rooftop"),
+                    Mall(name="BSR Mall", 
+                         address="456 Anna Salai, Chennai",
+                         parking_info="Multi-level parking available"),
+                    Mall(name="Express Avenue Mall", 
+                         address="789 Express Avenue, Chennai",
+                         parking_info="Underground parking with 1000+ slots"),
+                    Mall(name="Marina Mall", 
+                         address="321 Marina Beach Road, Chennai",
+                         parking_info="Valet parking available"),
+                    Mall(name="Phoenix Mall", 
+                         address="654 Velachery Main Road, Chennai",
+                         parking_info="Multi-level parking with EV charging")
                 ]
                 
                 for mall in malls:
@@ -93,13 +137,15 @@ def init_db():
                 db.session.commit()
                 logger.info("Committed malls to database")
                 
-                # Create shops for each mall
+                # Create shops for each mall with additional information
                 all_shops = []
                 
                 # Create shops for Vivira Mall (mall_id=1)
                 vivira_shops = [
                     Shop(name="Zara", floor=2, category="Fashion", 
                          directions="Take the main escalator to the second floor. The store is on your right after the food court.",
+                         opening_hours="10:00 AM - 10:00 PM",
+                         contact="044-12345678",
                          mall_id=1),
                     Shop(name="H&M", floor=1, category="Fashion",
                          directions="Enter through the main entrance and take the first left. The store is on your right.",

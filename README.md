@@ -1,110 +1,143 @@
 # Mall Navigator
 
-A Flask-based web application that helps users navigate through various malls in Chennai, India. The app provides detailed directions to specific shops within each mall.
+A web application that helps users navigate through shopping malls, find stores, and get detailed directions to their desired destinations.
 
 ## Features
 
-- Browse through 5 major malls in Chennai
-- View all shops in each mall
-- Get detailed directions to reach specific shops
-- Information about shop categories and floor numbers
+### Mall Navigation
 
-## Prerequisites
+- Browse through different malls in the city
+- View detailed mall information including:
+  - Address and parking details
+  - Food court location and hours
+  - Contact information
+  - Website links
 
-- Python 3.8 or higher
-- pip (Python package installer)
+### Store Search and Navigation
 
-## Setup Instructions
+- Search for stores by name, category, or floor
+- Get detailed store information including:
+  - Opening hours
+  - Special offers
+  - Contact details
+  - Website links
 
-1. **Clone the repository**
+### Enhanced Navigation Features
+
+- Interactive "Start from" selection for personalized directions
+- Step-by-step navigation instructions
+- Estimated walking times
+- Accessibility information
+- Nearby amenities with walking distances
+- Visual floor map representation
+- Multiple starting point options:
+  - Main Entrance
+  - Parking Area
+  - Food Court
+  - Elevators
+  - Escalators
+  - Restrooms
+  - Information Desk
+
+## Technology Stack
+
+- **Backend**: Python with Flask
+- **Database**: SQLite with SQLAlchemy ORM
+- **Frontend**: HTML, CSS, Bootstrap 5
+- **Icons**: Bootstrap Icons
+
+## Project Structure
+
+```
+mallnav/
+├── app.py              # Main application file
+├── requirements.txt    # Python dependencies
+├── instance/
+│   └── malls.db       # SQLite database
+├── templates/
+│   ├── base.html      # Base template
+│   ├── index.html     # Home page
+│   ├── mall.html      # Mall details page
+│   ├── shop.html      # Shop details and navigation
+│   └── search_results.html  # Search results page
+└── README.md          # Project documentation
+```
+
+## Setup and Installation
+
+1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/yourusername/mallnav.git
    cd mallnav
    ```
 
-2. **Create and activate virtual environment**
+2. Create and activate a virtual environment:
 
    ```bash
-   # On Windows
    python -m venv venv
-   .\venv\Scripts\activate
-
-   # On macOS/Linux
-   python3 -m venv venv
-   source venv/bin/activate
+   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
    ```
 
-3. **Install required packages**
+3. Install dependencies:
+
    ```bash
    pip install -r requirements.txt
    ```
 
-## Running the Application
-
-1. **Start the Flask server**
+4. Run the application:
 
    ```bash
    python app.py
    ```
 
-2. **Access the application**
-   - Open your web browser
-   - Navigate to `http://127.0.0.1:5000`
+5. Open your browser and navigate to `http://127.0.0.1:5000`
 
-## Using the Application
+## Database Schema
 
-1. **Home Page**
+### Mall
 
-   - View all available malls
-   - Click on any mall to see its shops
+- id (Primary Key)
+- name
+- address
+- parking_info
+- food_court_location
+- food_court_hours
+- contact_number
+- email
+- website
 
-2. **Mall Page**
+### Shop
 
-   - See all shops in the selected mall
-   - View shop categories and floor numbers
-   - Click on any shop for detailed directions
+- id (Primary Key)
+- name
+- floor
+- category
+- directions
+- opening_hours
+- contact_number
+- special_offers
+- email
+- website
+- mall_id (Foreign Key)
 
-3. **Shop Details Page**
-   - Get specific directions to reach the shop
-   - View shop category and floor information
-   - Navigate back to mall or home page
+## Features in Development
 
-## Available Malls
+- [ ] Interactive floor maps
+- [ ] Real-time store occupancy
+- [ ] User reviews and ratings
+- [ ] Mobile application
+- [ ] AR navigation support
 
-1. Vivira Mall
-2. BSR Mall
-3. Express Avenue Mall
-4. Marina Mall
-5. Phoenix Mall
+## Contributing
 
-## Troubleshooting
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-If you encounter any issues:
-
-1. **Database not initializing**
-
-   - Delete the `instance/malls.db` file
-   - Restart the application
-
-2. **Package installation issues**
-
-   - Make sure your virtual environment is activated
-   - Try running `pip install --upgrade pip` first
-   - Then run `pip install -r requirements.txt`
-
-3. **Application not starting**
-   - Check if port 5000 is available
-   - Ensure all required packages are installed
-   - Verify Python version (should be 3.8 or higher)
-
-## Development
-
-- The application uses Flask for the backend
-- SQLite database for data storage
-- Bootstrap for frontend styling
-- Jinja2 templating engine
-
-## Credits
+## License
 
 Developed by Beny Dishon K
+This project is licensed under the MIT License - see the LICENSE file for details.
