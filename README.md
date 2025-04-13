@@ -1,4 +1,4 @@
-# Mall Navigator
+# MallNav
 
 A web application that helps users navigate through shopping malls, find stores, and get detailed directions to their desired destinations.
 
@@ -140,4 +140,4 @@ mallnav/
 ## License
 
 Developed by Beny Dishon K
-This project is licensed under the MIT License - see the LICENSE file for details.
+
